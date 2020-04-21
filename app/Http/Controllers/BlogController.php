@@ -4,8 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
+
 class BlogController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -13,6 +21,7 @@ class BlogController extends Controller
      */
     public function index()
     {
+        return Auth::user();
         return view('blog.home');
     }
 
@@ -23,7 +32,8 @@ class BlogController extends Controller
      */
     public function create()
     {
-        //
+        $data = ['title' => 'Create New','editor' => true];
+        return view('blog.editor')->with($data);
     }
 
     /**
@@ -34,7 +44,20 @@ class BlogController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $featureImage = '';
+        if($request->hasFile('featureImage')) {
+            $extension = $request->file('featureImage')->extension();
+            $featureImage = time() . Str::random(10) . '.' . $extension;
+        }
+
+        $data = [
+            'title'         => $request->input('title'),
+            'content'       => $request->input('content'),
+            'feature_image' => $featureImage,
+        ];
+        
+        return $data;
     }
 
     /**

@@ -17,6 +17,17 @@
                 </div>
             </div>
         </div>
+
+        @if(isset($editor))
+            <script src="https://cdn.ckeditor.com/4.13.1/standard/ckeditor.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>
+            <script>
+                setTimeout(function() {
+                    bsCustomFileInput.init();
+                    CKEDITOR.replace ('FormControlText' );
+                },300);
+            </script>
+        @endif
     </body>
 
 </html>
